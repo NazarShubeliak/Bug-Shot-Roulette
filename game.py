@@ -148,8 +148,32 @@ class Button:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
-spin_btn = Button("ЗАРЯДИТИ", 50, screen_height - 100)
-shoot_btn = Button("СТРІЛЯТИ", 250, screen_height - 100)
+class ImageButton:
+    def __init__(self, image_path, x, y, width=None, height=None):
+        self.image = pygame.image.load(image_path)
+        if width and height:
+            self.image = pygame.transform.scale(self.image, (width, height))
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.default_y = y  # Зберігаємо початкову позицію по Y
+        self.offset = 0
+
+    def update(self, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            self.offset = 10  # Опускаємо на 10 пікселів при наведенні
+        else:
+            self.offset = 0
+        self.rect.topleft = (self.rect.left, self.default_y + self.offset)
+
+    def draw(self):
+        screen.blit(self.image, self.rect)
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+# Ініціалізуємо кнопки з картинками, задаючи бажаний розмір
+shoot_btn = ImageButton("./img/shoot_button.png", 300, 950, width=240, height=100)
+spin_btn = ImageButton("./img/reload_button.png", 50, 950, width=240, height=100)
+
 radio_btn = Button("🎵 РАДІО", 450, screen_height - 100)
 
 # Кнопки для предметів гравця (створюватимемо динамічно)
@@ -308,6 +332,9 @@ while running:
     # Якщо гра запущена — малюємо UI гри
     if game_started:
         # Малюємо кнопки дій
+        mouse_pos = pygame.mouse.get_pos()
+        shoot_btn.update(mouse_pos)
+        spin_btn.update(mouse_pos)
         spin_btn.draw()
         shoot_btn.draw()
         radio_btn.draw()
