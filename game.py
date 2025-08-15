@@ -174,7 +174,8 @@ class ImageButton:
 shoot_btn = ImageButton("./img/shoot_button.png", 300, 950, width=240, height=100)
 spin_btn = ImageButton("./img/reload_button.png", 50, 950, width=240, height=100)
 
-radio_btn = Button("🎵 РАДІО", 450, screen_height - 100)
+# radio_btn = Button("🎵 РАДІО", 450, screen_height - 100)
+radio_btn = ImageButton("./img/radio_button.png", 550, 950, width=240, height=100)
 
 # Кнопки для предметів гравця (створюватимемо динамічно)
 item_buttons = []
@@ -335,6 +336,7 @@ while running:
         mouse_pos = pygame.mouse.get_pos()
         shoot_btn.update(mouse_pos)
         spin_btn.update(mouse_pos)
+        radio_btn.update(mouse_pos)
         spin_btn.draw()
         shoot_btn.draw()
         radio_btn.draw()
